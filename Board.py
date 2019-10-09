@@ -97,5 +97,5 @@ def game_loop():
         menu.play()
         
 
-
+screen.fill(white)
 game_loop()

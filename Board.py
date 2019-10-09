@@ -35,7 +35,8 @@ numberOfNodes.scale_to_title()
 #how we react to the input for our text field
 nodes_reaction = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
                                 reac_func=nodes_func_reaction,
-                                event_args={"id":thorpy.constants.EVENT_INSERT})
+                                event_args={"id":thorpy.constants.EVENT_INSERT, 
+                                "el":numberOfNodes})
 
 
 

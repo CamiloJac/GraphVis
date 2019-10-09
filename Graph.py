@@ -40,4 +40,4 @@ class Graph(object):
         offset = 0
         for node in self.graph_dict:
             pygame.draw.circle(screen, red, (random.randrange(215,625, 1), random.randrange(15,465, 1)), 15)
-            pygame.display.update()
+        pygame.display.update()

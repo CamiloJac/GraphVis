@@ -41,6 +41,6 @@ class Graph(object):
         for node in self.graph_dict:
             x = random.randrange(215,625, 1)
             y = random.randrange(15,465, 1)
-            pygame.gfxdraw.filled_circle(screen, x, y, 15, red)
-            pygame.gfxdraw.aacircle(screen, x, y, 15, red)
+            pygame.gfxdraw.filled_circle(screen, x, y, 5, red)
+            pygame.gfxdraw.aacircle(screen, x, y, 5, red)
         pygame.display.update()

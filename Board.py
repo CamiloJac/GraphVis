@@ -89,7 +89,7 @@ def game_loop():
     while not gameExit:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                sys.exit()  
 
             menu.react(event) #the menu automatically integrate your elements
         pygame.display.update()

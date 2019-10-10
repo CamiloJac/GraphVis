@@ -37,7 +37,6 @@ class Graph(object):
         #first clear the canvas
         pygame.draw.rect(screen, white, (topleft, (440, 480)))
 
-        offset = 0
         for node in self.graph_dict:
             x = random.randrange(215,625, 1)
             y = random.randrange(15,465, 1)

@@ -39,5 +39,8 @@ class Graph(object):
 
         offset = 0
         for node in self.graph_dict:
-            pygame.draw.circle(screen, red, (random.randrange(215,625, 1), random.randrange(15,465, 1)), 15)
+            x = random.randrange(215,625, 1)
+            y = random.randrange(15,465, 1)
+            pygame.gfxdraw.filled_circle(screen, x, y, 15, red)
+            pygame.gfxdraw.aacircle(screen, x, y, 15, red)
         pygame.display.update()

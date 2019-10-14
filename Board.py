@@ -14,8 +14,6 @@ screen = pygame.display.set_mode(display_size)
 #window title
 pygame.display.set_caption('Graph Visualizer')
 
-#clock = pygame.time.Clock()
-
 #initialize empty graph
 myGraph = Graph.Graph()
 
@@ -40,10 +38,6 @@ nodes_reaction = thorpy.Reaction(reacts_to=thorpy.constants.THORPY_EVENT,
 
 
 
-numberOfEdges = thorpy.Inserter(name="Edges:", value="NOT WORKING")
-numberOfEdges.scale_to_title()
-
-
 #button to generate graph
 generate_graph_button = thorpy.make_button("Generate Graph!", 
                                             func=myGraph.draw_graph, 
@@ -58,8 +52,7 @@ generate_graph_button = thorpy.make_button("Generate Graph!",
 button = thorpy.make_button("Quit", func=thorpy.functions.quit_func)
 
 #elements of menu
-elements = [title_element, numberOfNodes, numberOfEdges, 
-generate_graph_button, button]
+elements = [title_element, numberOfNodes, generate_graph_button, button]
 
 #set our thorpy gui menu up
 box = thorpy.Box(elements=elements)

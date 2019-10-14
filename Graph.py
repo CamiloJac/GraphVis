@@ -10,7 +10,20 @@ class Graph(object):
     #adj list
     graph_dict={}
 
-    def __init__(self, graph_dict=False):
+    def __init__(self, fileName=None, graph_dict=False):
+
+        ''' If there is a text file passed in... parse it 
+        and build graph'''
+        if fileName:
+            file = open(fileName, 'r')
+            nodeCount = int(file.readline())
+            for c in range(nodeCount):
+                currEdges = file.readline()
+                currEdges = currEdges.split()
+                for currEdge in currEdges:
+                    self.addEdge(c, currEdge)
+
+
         '''We can take in a graph, if we do then
         just assign our graph dict to that one'''
         if graph_dict:
@@ -24,7 +37,7 @@ class Graph(object):
         
     def addEdge(self, nodeFrom, nodeTo):
         if nodeFrom not in self.graph_dict:
-            self[nodeFrom] = [nodeTo]
+            self.graph_dict[nodeFrom] = [nodeTo]
         else:
             self.graph_dict[nodeFrom].append(nodeTo)   
 

@@ -21,7 +21,7 @@ class Graph(object):
                 currEdges = file.readline()
                 currEdges = currEdges.split()
                 for currEdge in currEdges:
-                    self.addEdge(c, currEdge)
+                    self.addEdge(int(c), int(currEdge))
 
 
         '''We can take in a graph, if we do then

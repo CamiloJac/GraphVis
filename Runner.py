@@ -8,7 +8,7 @@ def game_loop(itemMenu, itemBox, canvas):
             if event.type == pygame.QUIT:
                 sys.exit()  
 
-            itemMenu.react(event) #the menu automatically integrate your elements
+            itemMenu.react(event)
         pygame.display.update()
         itemBox.blit()
         itemBox.update()

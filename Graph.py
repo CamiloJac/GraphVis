@@ -1,7 +1,9 @@
-import pygame, math, random
+import pygame
+import math
+import random
 
 class Graph(object):
-    
+
     #adj list
     graph_dict={}
 

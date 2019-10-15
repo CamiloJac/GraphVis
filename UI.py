@@ -1,4 +1,7 @@
-import pygame, thorpy, Graph, DrawingAlgorithms as algo
+import pygame
+import thorpy
+import Graph
+import DrawingAlgorithms as algo
 
 white = 255,255,255
 red = 195, 75, 75

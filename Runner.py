@@ -1,4 +1,10 @@
-import sys, pygame, time, random, thorpy, Graph, UI
+import sys
+import pygame
+import time
+import random
+import thorpy
+import Graph
+import UI
 
 def game_loop(itemMenu, itemBox, canvas):
     gameExit = False

@@ -1,4 +1,5 @@
-import random, math
+import random
+import math
 
 def randomDraw(g, x1, y1, x2, y2):
     coordinates = {}
@@ -12,4 +13,3 @@ def baryCentric(g, x1, y1, x2, y2):
     area = width * height
     coordinates = randomDraw(g, x1, y1, x2, y2)
     k = math.sqrt(area*len(coordinates))
-    

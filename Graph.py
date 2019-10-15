@@ -45,14 +45,3 @@ class Graph(object):
         for node in self.graph_dict:
             for neighbor in self.graph_dict[node]:
                 print("(",node,", ", neighbor, ")")
-
-    def draw_graph(self, screen, size, topleft, startX, startY):
-        #first clear the canvas
-        pygame.draw.rect(screen, white, (topleft, (440, 480)))
-
-        for node in self.graph_dict:
-            x = random.randrange(215,625, 1)
-            y = random.randrange(15,465, 1)
-            pygame.gfxdraw.filled_circle(screen, x, y, 5, red)
-            pygame.gfxdraw.aacircle(screen, x, y, 5, red)
-        pygame.display.update()

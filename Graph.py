@@ -1,12 +1,7 @@
 import pygame, math, random
 
-red = 195, 75, 75
-white = 255, 255, 255
-
-    
-
 class Graph(object):
-
+    
     #adj list
     graph_dict={}
 

@@ -1,5 +1,5 @@
-import random
 import math
+import random
 
 def randomDraw(g, x1, y1, x2, y2):
     coordinates = {}

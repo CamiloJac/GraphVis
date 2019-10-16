@@ -1,6 +1,5 @@
 import pygame
 import thorpy
-import Graph
 import DrawingAlgorithms as algo
 
 white = 255,255,255
@@ -47,6 +46,7 @@ class canvas:
         self.width = width
         self.height = height
         self.clear()
+        pygame.display.update()
     
     def clear(self):
         pygame.draw.rect(self.display, white, (self.topleft, (self.width, self.height)))
@@ -55,7 +55,7 @@ class canvas:
         self.clear()
         coordinates = {}
         if drawType == 'rand':
-            coordinates = algo.randomDraw(g, 200, 0, 640, 480)
+            coordinates = algo.randomDraw(g, 205, 5, 635, 475)
         
         for node in g.graph_dict:
             for edge in g.graph_dict[node]:

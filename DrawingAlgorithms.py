@@ -8,6 +8,10 @@ def randomDraw(g, x1, y1, x2, y2):
     return coordinates
 
 def baryCentric(g, x1, y1, x2, y2):
+    #lx = c1 * log d * (Delta x/d)
+    #ly = c1 * log d * (Delta y/d)
+
+
     width = x2-x1
     height = y2-y1
     area = width * height

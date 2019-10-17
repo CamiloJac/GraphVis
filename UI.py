@@ -21,8 +21,15 @@ class menu:
                                         func=drawingCanvas.draw_graph, 
                                         params={'g':g, 
                                         'drawType':'rand'})
+        springDraw = thorpy.make_button("Spring Draw",
+                                        func=drawingCanvas.draw_graph, 
+                                        params={'g':g, 
+                                        'drawType':'spring'})
+        clearButton = thorpy.make_button("Clear", 
+                                        func=drawingCanvas.clear)
+    
         quitButton = thorpy.make_button("Quit", func=thorpy.functions.quit_func)
-        self.elements = [title_element, randomDraw, quitButton]
+        self.elements = [title_element, randomDraw, springDraw, clearButton, quitButton]
         self.box = thorpy.Box(elements=self.elements)
         self.box.fit_children(margins=(30,30))
         self.itemMenu = thorpy.Menu(self.box)
@@ -52,11 +59,21 @@ class canvas:
         pygame.draw.rect(self.display, white, (self.topleft, (self.width, self.height)))
     
     def draw_graph(self, g, drawType):
-        self.clear()
         coordinates = {}
+        x1 = 205
+        y1 = 5
+        x2 = 635
+        y2 = 475
         if drawType == 'rand':
-            coordinates = algo.randomDraw(g, 205, 5, 635, 475)
+            coordinates = algo.randomDraw(g, x1, y1, x2, y2)
+        if drawType == 'spring':
+            coordinates = algo.spring(g, x1, y1, x2, y2, self.display)
+
+        self.display_graph(g, coordinates)
+
         
+    def display_graph(self, g, coordinates):
+        self.clear()
         for node in g.graph_dict:
             for edge in g.graph_dict[node]:
                 pygame.gfxdraw.line(self.display, 
@@ -73,4 +90,3 @@ class canvas:
                                     coordinates[node][0], coordinates[node][1], 
                                     5, red)
         pygame.display.update()
-

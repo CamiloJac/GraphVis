@@ -26,6 +26,6 @@ class Graph(object):
         
     def addEdge(self, nodeFrom, nodeTo):
         if nodeFrom not in self.graph_dict:
-            self.graph_dict[nodeFrom] = [nodeTo]
+            self.graph_dict[nodeFrom] = {nodeTo}
         else:
-            self.graph_dict[nodeFrom].append(nodeTo)
+            self.graph_dict[nodeFrom].add(nodeTo)

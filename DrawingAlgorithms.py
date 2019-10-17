@@ -22,7 +22,7 @@ def spring(g, x1, y1, x2, y2, canvas):
     c1 = 2
     c2 = 100
     c3 = 1
-    c4 = 0.9
+    c4 = 0.3
     M = 100
     coordinates = randomDraw(g, 205, 5, 635, 475)
     forces = {}
@@ -47,7 +47,7 @@ def spring(g, x1, y1, x2, y2, canvas):
         coordinatesCopy = floor_coordinates(coordinates)
         canvas.display_graph(g, coordinatesCopy)
         time.sleep(.025)
-        
+
     return coordinates    
 
     

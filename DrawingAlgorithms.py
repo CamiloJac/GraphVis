@@ -30,8 +30,6 @@ def spring(g, x1, y1, x2, y2, canvas):
                 if nodeFrom != nodeTo:
                     xdiff = coordinates[nodeFrom][0] - coordinates[nodeTo][0]
                     ydiff = coordinates[nodeFrom][1] - coordinates[nodeTo][1]
-
-                    #pythagorean theorem
                     d = math.sqrt(xdiff**2 + ydiff**2)
 
                     

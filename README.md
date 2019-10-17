@@ -12,5 +12,5 @@ pygame:
 thorpy:
   pip3 install thorpy
 ```
-
+### Example
 ![image of spring algorithm](https://i.imgur.com/H6D4E95.png)

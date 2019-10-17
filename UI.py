@@ -40,8 +40,6 @@ class menu:
         self.box.set_topleft(topleft)
         self.box.set_size(size)
 
-
-
 class canvas:
     display = None
     width = None
@@ -53,11 +51,11 @@ class canvas:
         self.width = width
         self.height = height
         self.clear()
-        pygame.display.update()
     
     def clear(self):
         pygame.draw.rect(self.display, white, (self.topleft, (self.width, self.height)))
-    
+        pygame.display.update()
+
     def draw_graph(self, g, drawType):
         coordinates = {}
         x1 = 205
@@ -67,11 +65,10 @@ class canvas:
         if drawType == 'rand':
             coordinates = algo.randomDraw(g, x1, y1, x2, y2)
         if drawType == 'spring':
-            coordinates = algo.spring(g, x1, y1, x2, y2, self.display)
+            coordinates = algo.spring(g, x1, y1, x2, y2, self)
 
         self.display_graph(g, coordinates)
 
-        
     def display_graph(self, g, coordinates):
         self.clear()
         for node in g.graph_dict:

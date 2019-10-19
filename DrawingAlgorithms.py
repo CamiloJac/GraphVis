@@ -4,10 +4,10 @@ import time
 import pygame
 
 def floor_coordinates(coordinates):
-        for coord in coordinates:
-            coordinates[coord][0] = math.floor(coordinates[coord][0])
-            coordinates[coord][1] = math.floor(coordinates[coord][1])
-        return coordinates
+    for coord in coordinates:
+        coordinates[coord][0] = math.floor(coordinates[coord][0])
+        coordinates[coord][1] = math.floor(coordinates[coord][1])
+    return coordinates
 
 def randomDraw(g, x1, y1, x2, y2):
     coordinates = {}

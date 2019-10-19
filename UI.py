@@ -8,11 +8,7 @@ grey = 150, 150, 150
 yellow = 255, 255, 0
 
 class menu:
-    display = None
-    elements = []
-    box = None
-    itemMenu = None
-    g = None
+
     def __init__(self, display, topleft, size, g, drawingCanvas):
         self.g = g
         self.display = display
@@ -41,10 +37,7 @@ class menu:
         self.box.set_size(size)
 
 class canvas:
-    display = None
-    width = None
-    height = None
-    topleft = None
+
     def __init__(self, display, topleft=(200,0), width=440, height=480):
         self.display = display
         self.topleft = topleft
@@ -57,7 +50,6 @@ class canvas:
         pygame.display.update()
 
     def draw_graph(self, g, drawType):
-        coordinates = {}
         x1 = 205
         y1 = 5
         x2 = 635

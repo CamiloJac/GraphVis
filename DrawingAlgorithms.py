@@ -9,6 +9,29 @@ def floor_coordinates(coordinates):
         coordinates[coord][1] = math.floor(coordinates[coord][1])
     return coordinates
 
+def normalize_coordinates(coordinates, x1, y1, x2, y2):
+    xMin = x1
+    yMin = y1
+    for coord in coordinates:
+        if coordinates[coord][0] < xMin:
+            xMin = coordinates[coord][0]
+
+        if coordinates[coord][1] < yMin:
+            yMin = coordinates[coord][1]
+    
+    xDiff = x1-xMin
+    if xDiff > 0:
+        for coord in coordinates:
+            coordinates[coord][0] += xDiff
+
+    yDiff = y1-yMin
+    if yDiff > 0:
+        for coord in coordinates:
+            coordinates[coord][1] += yDiff
+
+    return coordinates
+
+
 def randomDraw(g, x1, y1, x2, y2):
     coordinates = {}
     for node in g.graph_dict:
@@ -20,7 +43,7 @@ def spring(g, x1, y1, x2, y2, canvas):
     c1 = 1
     c2 = 200
     c3 = 200
-    c4 = 0.13456789
+    c4 = 0.3
     M = 300
     coordinates = randomDraw(g, 205, 5, 635, 475) #bounds of canvas frame +- radius of nodes
     for i in range(0, M):
@@ -60,9 +83,9 @@ def spring(g, x1, y1, x2, y2, canvas):
         print("xtotal: ", xtotal, " ytotal: ", ytotal)
         #just get a copy of the coordinates (floored) for displaying
         coordinatesCopy = floor_coordinates(coordinates)
+        coordinatesCopy = normalize_coordinates(coordinates, x1, y1, x2, y2)
         canvas.display_graph(g, coordinatesCopy)
         time.sleep(.025)
 
     return coordinates    
 
-    

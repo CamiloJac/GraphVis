@@ -1,6 +1,6 @@
 # GraphVis
 
- Implementing force-directed drawing algorithms for graphs. Currently has spring algorithm.
+ Implementing force-directed drawing algorithms for graphs. Spring and Barycenter are algorithms from the reference paper, the other two are modifications of the Barycenter and spring algorithm.
  
  ##### Reference: http://cs.brown.edu/people/rtamassi/gdhandbook/chapters/force-directed.pdf
 

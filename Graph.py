@@ -7,7 +7,7 @@ class Graph(object):
     graph_dict={}
 
     def __init__(self, fileName=None, graph_dict=False):
-        ''' If there is a text file 
+        ''' If there is a text file
         passed in... parse it and build graph'''
         if fileName:
             file = open(fileName, 'r')
@@ -23,7 +23,7 @@ class Graph(object):
         just assign our graph dict to that one'''
         if graph_dict:
             self.graph_dict = graph_dict
-        
+
     def addEdge(self, nodeFrom, nodeTo):
         if nodeFrom not in self.graph_dict:
             self.graph_dict[nodeFrom] = {nodeTo}

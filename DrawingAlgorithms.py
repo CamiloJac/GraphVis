@@ -38,13 +38,15 @@ def randomDraw(g, x1, y1, x2, y2):
                             random.randrange(y1, y2, 1)]
     return coordinates
 
-def spring(g, x1, y1, x2, y2, canvas):
+def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
     c1 = 1
     c2 = 200
     c3 = 200
     c4 = 0.3
     M = 300
-    coordinates = randomDraw(g, 205, 5, 635, 475) #bounds of canvas frame +- radius of nodes
+    if not coordinates:
+        coordinates = randomDraw(g, 205, 5, 635, 475) #bounds of canvas frame +- radius of nodes
+
     for i in range(0, M):
         forces = {}
         for nodeFrom in g.graph_dict:
@@ -88,9 +90,48 @@ def spring(g, x1, y1, x2, y2, canvas):
 
     return coordinates
 
+def orientation(p, q, r):
+    val = (q[1] - p[1]) * (r[0] - q[0]) - \
+          (q[0] - p[0]) * (r[1] - q[1])
+    
+    if val == 0:
+        return 0
+    elif val > 0:
+        return 1
+    else:
+        return 2
+
+def convexHull(g, coordinates):
+    if len(coordinates) < 3:
+        return
+    
+    # Get left most point
+    leftMost = min(coordinates, key=coordinates.get)
+    p = leftMost
+    hull = {}
+    q = 0
+
+    while True:
+        
+        # Append current point to hull
+        hull[p] = coordinates[p]
+
+        q = (p + 1) % len(coordinates)
+
+        for node in coordinates:
+            if orientation(coordinates[p], coordinates[node], coordinates[q]) == 2:
+                q = node
+        
+        p = q
+
+        if p == leftMost:
+            break
+
+    return hull
+
 def getPolygon(g, center):
     sublist = [node for node in g.graph_dict]
-    sublist = sublist[0:6]
+    sublist = sublist[0:3]
     partition = {}
     for node in sublist:
         partition[node] = [0.0, 0.0]
@@ -110,9 +151,14 @@ def sumEdges(g, nodeV, coordinates):
         summationY += coordinates[nodeU][1]
     return [summationX, summationY]
 
-def barycenterDraw(g, x1, y1, x2, y2, canvas):
+def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
     center = [420, 240]
-    coordinates = getPolygon(g, center)
+    if not hull:
+        coordinates = getPolygon(g, center)
+    else:
+        coordinates = randomDraw(g, 205, 5, 635, 475)
+        coordinates = convexHull(g, coordinates)
+
     fixedVertices = coordinates.copy()
 
     #place each free vertex at origin

@@ -59,12 +59,12 @@ def randomDraw(g, x1, y1, x2, y2):
 
 def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
     c1 = 1
-    c2 = 200
-    c3 = 200
+    c2 = y2/2
+    c3 = y2/2
     c4 = 0.3
     M = 300
     if not coordinates:
-        coordinates = randomDraw(g, 205, 5, 635, 475) #bounds of canvas frame +- radius of nodes
+        coordinates = randomDraw(g, x1, y1, x2, y2) #bounds of canvas frame +- radius of nodes
 
     for i in range(0, M):
         forces = {}
@@ -105,7 +105,7 @@ def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
         coordinatesCopy = floor_coordinates(coordinates)
         coordinatesCopy = normalize_coordinates(coordinates, x1, y1, x2, y2)
         canvas.display_graph(g, coordinatesCopy)
-        time.sleep(.025)
+        time.sleep(.0125)
 
     return coordinates
 
@@ -171,11 +171,11 @@ def sumEdges(g, nodeV, coordinates):
     return [summationX, summationY]
 
 def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
-    center = [420, 240]
+    center = [(x1+x2)/2, y2/2]
     if not hull:
         coordinates = getPolygon(g, center)
     else:
-        coordinates = randomDraw(g, 205, 5, 635, 475)
+        coordinates = randomDraw(g, x1, y1, x2, y2)
         coordinates = convexHull(g, coordinates)
 
     fixedVertices = coordinates.copy()

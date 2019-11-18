@@ -1,6 +1,6 @@
 import pygame
 from Graph import Graph
-from UI import canvas, menu
+from UI import Canvas, Menu
 
 def main():
     #initialize pygame instance
@@ -19,10 +19,10 @@ def main():
     myGraph = Graph(fileName='graphs.txt')
 
     #canvas instance (where graphs will be drawn)
-    myCanvas = canvas(screen)
+    myCanvas = Canvas(screen)
 
     #GUI menu to select what algorithm to display
-    myMenu = menu(screen, (0,0), (200, 480), myGraph, myCanvas)
+    myMenu = Menu(screen, (0,0), (200, 480), myGraph, myCanvas)
 
     #display menu
     myMenu.itemMenu.play()

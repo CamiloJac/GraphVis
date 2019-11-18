@@ -48,8 +48,6 @@ def normalize_coordinates(coordinates, x1, y1, x2, y2):
         for coord in coordinates:
             coordinates[coord][1] -= yDiffMax
         
-
-
     return coordinates
 
 def randomDraw(g, x1, y1, x2, y2):
@@ -152,7 +150,7 @@ def convexHull(g, coordinates):
 
 def getPolygon(g, center):
     sublist = [node for node in g.graph_dict]
-    sublist = sublist[0:random.randrange(0, len(g.graph_dict))]
+    sublist = sublist[0:random.randrange(3, len(g.graph_dict))]
     partition = {}
     for node in sublist:
         partition[node] = [0.0, 0.0]

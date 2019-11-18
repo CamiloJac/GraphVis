@@ -10,67 +10,72 @@ yellow = 255, 255, 0
 
 class Menu:
 
-    def __init__(cls, display, topleft, size, g, drawingCanvas):
-        cls.g = g
-        cls.display = display
-        title_element = thorpy.make_text('Graph Visualizer', 20, yellow)
-        cls.nodeCount = thorpy.Inserter(name="# of Nodes: ")
-        cls.probability = thorpy.Inserter(name="Probability: ")
-        randomDraw = thorpy.make_button('Random Draw',
+    def __init__(self, display, topleft, size, g, drawingCanvas):
+        self.g = g
+        self.display = display
+        self.title_element = thorpy.make_text('Graph Visualizer', 20, yellow)
+        self.nodeCount = thorpy.Inserter(name="# of Nodes: ")
+        self.probability = thorpy.Inserter(name="Probability: ")
+        self.randomDraw = thorpy.make_button('Random Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
                                         'drawType':'rand',
-                                        'menu': cls})
-        springDraw = thorpy.make_button('Spring Draw',
+                                        'menu': self})
+        self.springDraw = thorpy.make_button('Spring Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
                                         'drawType':'spring',
-                                        'menu': cls})
-        barycentricDraw = thorpy.make_button('Barycenter-Draw',
+                                        'menu': self})
+        self.barycentricDraw = thorpy.make_button('Barycenter-Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
                                         'drawType':'barycentric',
-                                        'menu': cls})
-        barycentricSpringDraw = thorpy.make_button('Barycentric-Spring',
+                                        'menu': self})
+        self.barycentricSpringDraw = thorpy.make_button('Barycentric-Spring',
                                                     func=drawingCanvas.draw_graph,
                                                     params={'g':g,
                                                             'drawType':'barycentric-spring',
-                                                            'menu': cls})
-        barycentricConvexHull = thorpy.make_button('Barycenter-Convex Hull', 
+                                                            'menu': self})
+        self.barycentricConvexHull = thorpy.make_button('Barycenter-Convex Hull', 
                                                     func=drawingCanvas.draw_graph,
                                                     params={'g':g,
                                                             'drawType':'barycentricHull',
-                                                            'menu': cls})
-        clearButton = thorpy.make_button('Clear',
-                                        func=drawingCanvas.clear)
+                                                            'menu': self})
+        self.clearButton = thorpy.make_button('Clear',
+                                        func=drawingCanvas.clear,
+                                        params={'width':drawingCanvas.width,
+                                                'height':drawingCanvas.height})
 
-        quitButton = thorpy.make_button('Quit', func=thorpy.functions.quit_func)
-        cls.elements = [title_element, cls.nodeCount, cls.probability, randomDraw, springDraw, barycentricDraw, barycentricSpringDraw, \
-                        barycentricConvexHull, clearButton, quitButton]
-        cls.box = thorpy.Box(elements=cls.elements)
-        cls.box.fit_children(margins=(30,30))
-        cls.itemMenu = thorpy.Menu(cls.box)
-        for element in cls.itemMenu.get_population():
-            element.surface = cls.display
+        self.quitButton = thorpy.make_button('Quit', func=thorpy.functions.quit_func)
+        self.elements = [self.title_element, self.nodeCount, self.probability, self.randomDraw, \
+                        self.springDraw, self.barycentricDraw, self.barycentricSpringDraw, \
+                        self.barycentricConvexHull, self.clearButton, self.quitButton]
+        self.box = thorpy.Box(elements=self.elements)
+        self.box.fit_children(margins=(30,30))
+        self.itemMenu = thorpy.Menu(self.box)
+        for element in self.itemMenu.get_population():
+            element.surface = self.display
 
-        cls.box.set_main_color(grey)
-        cls.box.set_topleft(topleft)
-        cls.box.set_size(size)
+        self.box.set_main_color(grey)
+        self.box.set_topleft(topleft)
+        self.box.set_size(size)
 
 class Canvas:
 
-    def __init__(cls, display, topleft=(200,0), width=440, height=480):
-        cls.display = display
-        cls.topleft = topleft
-        cls.width = width
-        cls.height = height
-        cls.clear()
+    def __init__(self, display, topleft=(200,0), width=440, height=480):
+        self.display = display
+        self.topleft = topleft
+        self.width = width
+        self.height = height
+        self.clear(width, height)
 
-    def clear(cls):
-        pygame.draw.rect(cls.display, white, (cls.topleft, (cls.width, cls.height)))
+    def clear(self, width, height):
+        self.width = width
+        self.height = height
+        pygame.draw.rect(self.display, white, (self.topleft, (self.width, self.height)))
         pygame.display.update()
 
-    def draw_graph(cls, g, drawType, menu):
+    def draw_graph(self, g, drawType, menu):
         try:
             nodeCount = int(menu.nodeCount.get_value())
         except ValueError:
@@ -93,32 +98,32 @@ class Canvas:
         if drawType == 'rand':
             coordinates = algo.randomDraw(g, x1, y1, x2, y2)
         if drawType == 'spring':
-            coordinates = algo.spring(g, x1, y1, x2, y2, cls)
+            coordinates = algo.spring(g, x1, y1, x2, y2, self)
         if drawType == 'barycentric':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, cls)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
         if drawType == 'barycentric-spring':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, cls)
-            coordinates = algo.spring(g, x1, y1, x2, y2, cls, coordinates)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
+            coordinates = algo.spring(g, x1, y1, x2, y2, self, coordinates)
         if drawType == 'barycentricHull':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, cls, hull=True)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, hull=True)
 
-        cls.display_graph(g, coordinates)
+        self.display_graph(g, coordinates)
 
-    def display_graph(cls, g, coordinates):
-        cls.clear()
+    def display_graph(self, g, coordinates):
+        self.clear(self.width, self.height)
         for node in g.graph_dict:
             for edge in g.graph_dict[node]:
-                pygame.gfxdraw.line(cls.display,
+                pygame.gfxdraw.line(self.display,
                                     coordinates[node][0], coordinates[node][1],
                                     coordinates[edge][0], coordinates[edge][1],
                                     (0,0,0))
 
 
         for node in coordinates:
-            pygame.gfxdraw.filled_circle(cls.display,
+            pygame.gfxdraw.filled_circle(self.display,
                                         coordinates[node][0], coordinates[node][1],
                                         5, red)
-            pygame.gfxdraw.aacircle(cls.display,
+            pygame.gfxdraw.aacircle(self.display,
                                     coordinates[node][0], coordinates[node][1],
                                     5, red)
         pygame.display.update()

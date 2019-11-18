@@ -1,4 +1,5 @@
 import pygame
+import sys
 from Graph import Graph
 from UI import Canvas, Menu
 
@@ -10,7 +11,7 @@ def main():
     display_size = display_width, display_height = 640, 480
 
     #initialize screen display
-    screen = pygame.display.set_mode(display_size)
+    screen = pygame.display.set_mode(display_size, pygame.VIDEORESIZE)
 
     #window title
     pygame.display.set_caption('Graph Visualizer')

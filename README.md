@@ -5,7 +5,7 @@
  ##### Reference: http://cs.brown.edu/people/rtamassi/gdhandbook/chapters/force-directed.pdf
 
 ##### Spring 
-![image of spring algorithm](https://i.imgur.com/a9E3FZb.png)
+![image of spring algorithm](https://i.imgur.com/W4yPyLa.png)
 
 ##### Barycenter
 ![image of barycentre algorithm](https://i.imgur.com/DDFmfL1.png)

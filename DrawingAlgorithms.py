@@ -12,22 +12,43 @@ def floor_coordinates(coordinates):
 def normalize_coordinates(coordinates, x1, y1, x2, y2):
     xMin = x1
     yMin = y1
+    xMax = x2
+    yMax = y2
     for coord in coordinates:
         if coordinates[coord][0] < xMin:
             xMin = coordinates[coord][0]
 
         if coordinates[coord][1] < yMin:
             yMin = coordinates[coord][1]
+        
+        if coordinates[coord][0] > xMax:
+            xMax = coordinates[coord][0]
+        
+        if coordinates[coord][1] > yMax:
+            yMax = coordinates[coord][1]
+        
 
-    xDiff = x1-xMin
-    if xDiff > 0:
+    xDiffMin = x1-xMin
+    xDiffMax = x2-xMax
+    if xDiffMin > 0:
         for coord in coordinates:
-            coordinates[coord][0] += xDiff
+            coordinates[coord][0] += xDiffMin
+    
+    if xDiffMax > 0:
+        for coord in coordinates:
+            coordinates[coord][0] -= xDiffMax
 
-    yDiff = y1-yMin
-    if yDiff > 0:
+    yDiffMin = y1-yMin
+    yDiffMax = y2-yMax
+    if yDiffMin > 0:
         for coord in coordinates:
-            coordinates[coord][1] += yDiff
+            coordinates[coord][1] += yDiffMin
+
+    if yDiffMax > 0:
+        for coord in coordinates:
+            coordinates[coord][1] -= yDiffMax
+        
+
 
     return coordinates
 
@@ -131,7 +152,7 @@ def convexHull(g, coordinates):
 
 def getPolygon(g, center):
     sublist = [node for node in g.graph_dict]
-    sublist = sublist[0:3]
+    sublist = sublist[0:random.randrange(0, len(g.graph_dict))]
     partition = {}
     for node in sublist:
         partition[node] = [0.0, 0.0]
@@ -174,7 +195,10 @@ def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
             continue
         else:
             summation = sumEdges(g, node, coordinates)
-            oneOverDeg = 1 / len(g.graph_dict[node])
+            if len(g.graph_dict[node]) > 0:
+                oneOverDeg = 1 / len(g.graph_dict[node])
+            else:
+                oneOverDef = 1 / random.random()
             coordinates[node][0] = math.ceil(oneOverDeg * summation[0])
             coordinates[node][1] = math.ceil(oneOverDeg * summation[1])
 

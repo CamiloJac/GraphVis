@@ -1,6 +1,7 @@
 import pygame
 import thorpy
 import DrawingAlgorithms as algo
+from Graph import Graph
 
 white = 255,255,255
 red = 195, 75, 75
@@ -13,31 +14,38 @@ class menu:
         self.g = g
         self.display = display
         title_element = thorpy.make_text('Graph Visualizer', 20, yellow)
+        self.nodeCount = thorpy.Inserter(name="# of Nodes: ")
+        self.probability = thorpy.Inserter(name="Probability: ")
         randomDraw = thorpy.make_button('Random Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
-                                        'drawType':'rand'})
+                                        'drawType':'rand',
+                                        'menu': self})
         springDraw = thorpy.make_button('Spring Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
-                                        'drawType':'spring'})
+                                        'drawType':'spring',
+                                        'menu': self})
         barycentricDraw = thorpy.make_button('Barycenter-Draw',
                                         func=drawingCanvas.draw_graph,
                                         params={'g':g,
-                                        'drawType':'barycentric'})
+                                        'drawType':'barycentric',
+                                        'menu': self})
         barycentricSpringDraw = thorpy.make_button('Barycentric-Spring',
                                                     func=drawingCanvas.draw_graph,
                                                     params={'g':g,
-                                                            'drawType':'barycentric-spring'})
+                                                            'drawType':'barycentric-spring',
+                                                            'menu': self})
         barycentricConvexHull = thorpy.make_button('Barycenter-Convex Hull', 
                                                     func=drawingCanvas.draw_graph,
                                                     params={'g':g,
-                                                            'drawType':'barycentricHull'})
+                                                            'drawType':'barycentricHull',
+                                                            'menu': self})
         clearButton = thorpy.make_button('Clear',
                                         func=drawingCanvas.clear)
 
         quitButton = thorpy.make_button('Quit', func=thorpy.functions.quit_func)
-        self.elements = [title_element, randomDraw, springDraw, barycentricDraw, barycentricSpringDraw, \
+        self.elements = [title_element, self.nodeCount, self.probability, randomDraw, springDraw, barycentricDraw, barycentricSpringDraw, \
                         barycentricConvexHull, clearButton, quitButton]
         self.box = thorpy.Box(elements=self.elements)
         self.box.fit_children(margins=(30,30))
@@ -62,7 +70,22 @@ class canvas:
         pygame.draw.rect(self.display, white, (self.topleft, (self.width, self.height)))
         pygame.display.update()
 
-    def draw_graph(self, g, drawType):
+    def draw_graph(self, g, drawType, menu):
+        try:
+            nodeCount = int(menu.nodeCount.get_value())
+        except ValueError:
+            print('invalid node count')
+            return
+        
+        try:
+            probability = float(menu.probability.get_value())
+            if probability >= 1:
+                print('probability must be > 0 and < 1')
+                return
+        except ValueError:
+            print('invalid probability')
+            return
+        g = Graph(erdos_renyi=True, n=nodeCount, p=probability)
         x1 = 205
         y1 = 5
         x2 = 635

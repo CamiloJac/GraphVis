@@ -7,7 +7,9 @@
 ##### Spring 
 ![image of spring algorithm](https://i.imgur.com/W4yPyLa.png)
 
-![gif of spring algorithm](graphVisImages/springGif2.gif)
+<kbd>
+  <img src=graphVisImages/springGif2.gif>
+</kbd>
 
 ##### Barycenter
 ![image of barycentre algorithm](https://i.imgur.com/DDFmfL1.png)

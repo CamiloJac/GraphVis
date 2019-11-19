@@ -143,7 +143,6 @@ class Canvas:
             time.sleep(.0125)
 
     def get_next_surface(self, g, coordinates):
-        #self.clear()
         surface = self.display.copy()
         surface.fill(WHITE, (self.topleft, (self.width, self.height)))
         for node in g.graph_dict:

@@ -2,12 +2,13 @@ import pygame
 import thorpy
 import DrawingAlgorithms as algo
 from Graph import Graph
-
+import time
 
 WHITE = 255,255,255
-red = 195, 75, 75
-grey = 150, 150, 150
-yellow = 255, 255, 0
+RED = 195, 75, 75
+GREY = 150, 150, 150
+YELLOW = 255, 255, 0
+BLACK = 0, 0, 0
 
 class Menu:
 
@@ -16,7 +17,7 @@ class Menu:
         self.topleft = topleft
         self.size = size
         self.drawingCanvas = drawingCanvas
-        self.title_element = thorpy.make_text('Graph Visualizer', 20, yellow)
+        self.title_element = thorpy.make_text('Graph Visualizer', 20, YELLOW)
         self.nodeCount = thorpy.Inserter(name="# of Nodes: ")
         self.probability = thorpy.Inserter(name="Probability: ")
         self.randomDraw = thorpy.make_button('Random Draw',
@@ -53,7 +54,7 @@ class Menu:
         self.box.set_topleft(self.topleft)
         self.size = (width, height)
         self.box.set_size(self.size)
-        self.box.set_main_color(grey)
+        self.box.set_main_color(GREY)
         for element in self.itemMenu.get_population():
             element.surface = self.display
         
@@ -71,8 +72,15 @@ class Canvas:
         self.clear()
 
     def clear(self):
-        pygame.draw.rect(self.display, WHITE, (self.topleft, (self.width, self.height)))
+        self.display.fill(WHITE, (self.topleft, (self.width, self.height)))
+        #pygame.draw.rect(self.display, WHITE, (self.topleft, (self.width, self.height)))
         pygame.display.update()
+
+    def display_loading(self):
+        font = pygame.font.Font(pygame.font.get_default_font(), 12)
+        text = font.render('Loading graph...', True, BLACK)
+        self.display.blit(text, (self.width/2, self.height/2))
+        pygame.display.flip()
 
     def draw_graph(self, drawType, menu):
         try:
@@ -94,22 +102,24 @@ class Canvas:
         y1 = self.topleft[1] + 5
         x2 = self.width - 5
         y2 = self.height - 5
+        surfaces = {}
         if drawType == 'rand':
             coordinates = algo.randomDraw(g, x1, y1, x2, y2)
         if drawType == 'spring':
-            coordinates = algo.spring(g, x1, y1, x2, y2, self)
+            coordinates = algo.spring(g, x1, y1, x2, y2, self, surfaces)
         if drawType == 'barycentric':
             coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
         if drawType == 'barycentric-spring':
             coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
-            coordinates = algo.spring(g, x1, y1, x2, y2, self, coordinates)
+            coordinates = algo.spring(g, x1, y1, x2, y2, self, surfaces, coordinates)
         if drawType == 'barycentricHull':
             coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, hull=True)
 
-        self.display_graph(g, coordinates)
+        #self.display_graph(g, coordinates)
+        self.display_surfaces(surfaces)
 
     def display_graph(self, g, coordinates):
-        self.clear()
+        self.clear()  
         for node in g.graph_dict:
             for edge in g.graph_dict[node]:
                 pygame.gfxdraw.line(self.display,
@@ -120,8 +130,35 @@ class Canvas:
         for node in coordinates:
             pygame.gfxdraw.filled_circle(self.display,
                                         coordinates[node][0], coordinates[node][1],
-                                        5, red)
+                                        5, RED)
             pygame.gfxdraw.aacircle(self.display,
                                     coordinates[node][0], coordinates[node][1],
-                                    5, red)
+                                    5, RED)
         pygame.display.update()
+
+    def display_surfaces(self, surfaces):
+        for surface in surfaces:
+            self.display.blit(surfaces[surface], (0,0))
+            pygame.display.flip()
+            time.sleep(.0125)
+
+    def get_next_surface(self, g, coordinates):
+        #self.clear()
+        surface = self.display.copy()
+        surface.fill(WHITE, (self.topleft, (self.width, self.height)))
+        for node in g.graph_dict:
+            for edge in g.graph_dict[node]:
+                pygame.gfxdraw.line(surface,
+                                    coordinates[node][0], coordinates[node][1],
+                                    coordinates[edge][0], coordinates[edge][1],
+                                    (0,0,0))
+
+        for node in coordinates:
+            pygame.gfxdraw.filled_circle(surface,
+                                        coordinates[node][0], coordinates[node][1],
+                                        5, RED)
+            pygame.gfxdraw.aacircle(surface,
+                                    coordinates[node][0], coordinates[node][1],
+                                    5, RED)
+        return surface
+                

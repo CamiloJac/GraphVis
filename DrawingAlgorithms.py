@@ -57,7 +57,10 @@ def randomDraw(g, x1, y1, x2, y2):
                             random.randrange(y1, y2, 1)]
     return coordinates
 
-def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
+def spring(g, x1, y1, x2, y2, canvas, surfaces, coordinates=None):
+    coordinatesCopyList = {}
+    canvas.clear()
+    canvas.display_loading()
     c1 = 1
     c2 = y2/2
     c3 = y2/2
@@ -68,6 +71,7 @@ def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
 
     for i in range(0, M):
         forces = {}
+        coordinatesCopyList[i] = {}
         for nodeFrom in g.graph_dict:
             for nodeTo in g.graph_dict:
                 if nodeFrom != nodeTo:
@@ -100,12 +104,11 @@ def spring(g, x1, y1, x2, y2, canvas, coordinates=None):
             coordinates[nodeFrom][1] += c4*(forces[nodeFrom][1])
             xtotal += forces[nodeFrom][0]
             ytotal += forces[nodeFrom][1]
-        #print("xtotal: ", xtotal, " ytotal: ", ytotal)
         #just get a copy of the coordinates (floored) for displaying
         coordinatesCopy = floor_coordinates(coordinates)
         coordinatesCopy = normalize_coordinates(coordinates, x1, y1, x2, y2)
-        canvas.display_graph(g, coordinatesCopy)
-        time.sleep(.0125)
+        #canvas.display_graph(g, coordinatesCopy)
+        surfaces[i] = canvas.get_next_surface(g, coordinatesCopy)
 
     return coordinates
 
@@ -148,7 +151,7 @@ def convexHull(g, coordinates):
 
     return hull
 
-def getPolygon(g, center):
+def getPolygon(g, center, canvas):
     sublist = [node for node in g.graph_dict]
     sublist = sublist[0:random.randrange(3, len(g.graph_dict))]
     partition = {}
@@ -157,8 +160,8 @@ def getPolygon(g, center):
 
     i = 0
     for node in partition:
-        partition[node] = [math.ceil(center[0] + 100 * math.cos(i * (2 * math.pi) / len(partition))),
-                            math.ceil(center[1] + 100 * math.sin(i * (2 * math.pi) / len(partition)))]
+        partition[node] = [math.ceil(center[0] + (canvas.height/2) * math.cos(i * (2 * math.pi) / len(partition))),
+                            math.ceil(center[1] + (canvas.height/2) * math.sin(i * (2 * math.pi) / len(partition)))]
         i+=1
     return partition
 
@@ -173,7 +176,7 @@ def sumEdges(g, nodeV, coordinates):
 def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
     center = [(x1+x2)/2, y2/2]
     if not hull:
-        coordinates = getPolygon(g, center)
+        coordinates = getPolygon(g, center, canvas)
     else:
         coordinates = randomDraw(g, x1, y1, x2, y2)
         coordinates = convexHull(g, coordinates)

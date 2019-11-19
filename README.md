@@ -15,7 +15,7 @@
 ##### Barycentric spring
 ![image of barycentre spring algorithm](https://i.imgur.com/9mWfEpi.png)
 
-<kbd><img src=graphVisImages/baryCentreSpring.gif></kbd>
+<kbd><img src=graphVisImages/barycentric2.gif></kbd>
 
 ##### Barycenter convex hull
 ![image of barycentre convex hull](https://i.imgur.com/ejrfxeo.png)

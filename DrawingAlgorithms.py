@@ -7,54 +7,58 @@ def floor_coordinates(coordinates):
     for coord in coordinates:
         coordinates[coord][0] = math.floor(coordinates[coord][0])
         coordinates[coord][1] = math.floor(coordinates[coord][1])
+
     return coordinates
 
-def normalize_coordinates(coordinates, x1, y1, x2, y2):
-    xMin = x1
-    yMin = y1
-    xMax = x2
-    yMax = y2
+def normalize_coordinates(coordinates, xMin, yMin, xMax, yMax):
+    xDiffMin = 0
+    xDiffMax = 0
+    yDiffMin = 0
+    yDiffMax = 0
+
     for coord in coordinates:
         if coordinates[coord][0] < xMin:
-            xMin = coordinates[coord][0]
+            if xMin - coordinates[coord][0] > xDiffMin:
+                xDiffMin = xMin - coordinates[coord][0]
+            coordinates[coord][0] += xDiffMin
 
         if coordinates[coord][1] < yMin:
-            yMin = coordinates[coord][1]
-        
-        if coordinates[coord][0] > xMax:
-            xMax = coordinates[coord][0]
-        
-        if coordinates[coord][1] > yMax:
-            yMax = coordinates[coord][1]
-        
-
-    xDiffMin = x1-xMin
-    xDiffMax = x2-xMax
-    if xDiffMin > 0:
-        for coord in coordinates:
-            coordinates[coord][0] += xDiffMin
-    
-    if xDiffMax > 0:
-        for coord in coordinates:
-            coordinates[coord][0] -= xDiffMax
-
-    yDiffMin = y1-yMin
-    yDiffMax = y2-yMax
-    if yDiffMin > 0:
-        for coord in coordinates:
+            if yMin - coordinates[coord][1] > yDiffMin:
+                yDiffMin = yMin - coordinates[coord][1]
             coordinates[coord][1] += yDiffMin
 
-    if yDiffMax > 0:
-        for coord in coordinates:
+        if coordinates[coord][0] > xMax:
+            if xMax - coordinates[coord][0] > xDiffMax:
+                xDiffMax = xMax - coordinates[coord][0]
+            coordinates[coord][0] -= xDiffMax
+
+        if coordinates[coord][1] > yMax:
+            if yDiffMax - coordinates[coord][1] > yDiffMax:
+                yDiffMax = yMax - coordinates[coord][1]
+            coordinates[coord][1] -= yDiffMax
+
+    for coord in coordinates:
+        if coordinates[coord][0] + xDiffMin < xMax:
+            coordinates[coord][0] += xDiffMin
+        
+        if coordinates[coord][1] + yDiffMin < yMax:
+            coordinates[coord][1] += yDiffMin
+        
+        if coordinates[coord][0] - xDiffMax > xMin:
+            coordinates[coord][0] -= xDiffMax
+        
+        if coordinates[coord][1] - yDiffMax > yMin:
             coordinates[coord][1] -= yDiffMax
         
     return coordinates
 
-def randomDraw(g, x1, y1, x2, y2):
+def randomDraw(g, x1, y1, x2, y2, canvas=None, surfaces=None):
     coordinates = {}
     for node in g.graph_dict:
         coordinates[node] = [random.randrange(x1, x2, 1),
                             random.randrange(y1, y2, 1)]
+    if canvas and surfaces:
+        surfaces[0] = canvas.get_next_surface(g, coordinates)
     return coordinates
 
 def spring(g, x1, y1, x2, y2, canvas, surfaces, coordinates=None):
@@ -78,6 +82,8 @@ def spring(g, x1, y1, x2, y2, canvas, surfaces, coordinates=None):
                     xdiff = coordinates[nodeFrom][0] - coordinates[nodeTo][0]
                     ydiff = coordinates[nodeFrom][1] - coordinates[nodeTo][1]
                     d = math.sqrt(xdiff**2 + ydiff**2)
+                    if d == 0:
+                        d = 1
                     currentForce = [0.0, 0.0]
 
                     if nodeTo in g.graph_dict[nodeFrom]:
@@ -173,7 +179,10 @@ def sumEdges(g, nodeV, coordinates):
         summationY += coordinates[nodeU][1]
     return [summationX, summationY]
 
-def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
+def barycenterDraw(g, x1, y1, x2, y2, canvas, surfaces, hull=False):
+    canvas.clear()
+    canvas.display_loading()
+
     center = [(x1+x2)/2, y2/2]
     if not hull:
         coordinates = getPolygon(g, center, canvas)
@@ -191,17 +200,21 @@ def barycenterDraw(g, x1, y1, x2, y2, canvas, hull=False):
             coordinates[node] = center.copy()
 
     #place free vertices according to fixed vertices
-    for node in g.graph_dict:
-        if node in fixedVertices:
-            continue
-        else:
-            summation = sumEdges(g, node, coordinates)
-            if len(g.graph_dict[node]) > 0:
-                oneOverDeg = 1 / len(g.graph_dict[node])
+    for i in range(0, 200):
+        for node in g.graph_dict:
+            if node in fixedVertices:
+                continue
             else:
-                oneOverDef = 1 / random.random()
-            coordinates[node][0] = math.ceil(oneOverDeg * summation[0])
-            coordinates[node][1] = math.ceil(oneOverDeg * summation[1])
+                summation = sumEdges(g, node, coordinates)
+                if len(g.graph_dict[node]) > 0:
+                    oneOverDeg = 1 / len(g.graph_dict[node])
+                else:
+                    oneOverDeg = 1 / random.random()
+                coordinates[node][0] = math.ceil(oneOverDeg * summation[0])
+                coordinates[node][1] = math.ceil(oneOverDeg * summation[1])
+
+        coordinates = normalize_coordinates(coordinates, x1, y1, x2, y2)
+        surfaces[i] = canvas.get_next_surface(g, coordinates)
 
     return coordinates
 

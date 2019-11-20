@@ -104,37 +104,19 @@ class Canvas:
         y2 = self.height - 5
         surfaces = {}
         if drawType == 'rand':
-            coordinates = algo.randomDraw(g, x1, y1, x2, y2)
+            coordinates = algo.randomDraw(g, x1, y1, x2, y2, self, surfaces)
         if drawType == 'spring':
             coordinates = algo.spring(g, x1, y1, x2, y2, self, surfaces)
         if drawType == 'barycentric':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, surfaces)
         if drawType == 'barycentric-spring':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, surfaces)
             coordinates = algo.spring(g, x1, y1, x2, y2, self, surfaces, coordinates)
         if drawType == 'barycentricHull':
-            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, hull=True)
+            coordinates = algo.barycenterDraw(g, x1, y1, x2, y2, self, surfaces, hull=True)
 
-        #self.display_graph(g, coordinates)
         self.display_surfaces(surfaces)
 
-    def display_graph(self, g, coordinates):
-        self.clear()  
-        for node in g.graph_dict:
-            for edge in g.graph_dict[node]:
-                pygame.gfxdraw.line(self.display,
-                                    coordinates[node][0], coordinates[node][1],
-                                    coordinates[edge][0], coordinates[edge][1],
-                                    (0,0,0))
-
-        for node in coordinates:
-            pygame.gfxdraw.filled_circle(self.display,
-                                        coordinates[node][0], coordinates[node][1],
-                                        5, RED)
-            pygame.gfxdraw.aacircle(self.display,
-                                    coordinates[node][0], coordinates[node][1],
-                                    5, RED)
-        pygame.display.update()
 
     def display_surfaces(self, surfaces):
         for surface in surfaces:

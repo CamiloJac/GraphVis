@@ -200,7 +200,11 @@ def barycenterDraw(g, x1, y1, x2, y2, canvas, surfaces, hull=False):
             coordinates[node] = center.copy()
 
     #place free vertices according to fixed vertices
-    for i in range(0, 200):
+    i = 1
+    if not hull:
+        i = 200
+
+    for i in range(0, i):
         for node in g.graph_dict:
             if node in fixedVertices:
                 continue
@@ -222,3 +226,5 @@ def barycenterDraw(g, x1, y1, x2, y2, canvas, surfaces, hull=False):
 #tree drawings -- put leaves on outside
 #start with barycentic and plug into spring
 #clean up (try out for more graphs)
+#generate trees by picking random previous parent
+#find spanning tree, run bfs on vertex, make bfs, get leaves as polygon 
